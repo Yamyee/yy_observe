@@ -15,8 +15,9 @@ NSString *yy_observeNotificationMapKey = @"yy_observeNotificationMapKey";
 NSString *yy_addObserveKey = @"yy_addObserveKey";
 
 @interface NSObject()
+///监听的keyPath与block映射
 @property (nonatomic,strong)NSMutableDictionary<NSString *,yy_keyPathBlock>         *observeKeyPathMap;
-
+///监听的NSNotificationName与block映射
 @property (nonatomic,strong)NSMutableDictionary<NSString *,yy_notificationBlock>    *observeNotificationMap;
 ///防止在yy_dealloc中对未添加监听的对象处理出现野指针错误
 @property (nonatomic,assign)BOOL    yy_addObserver;
