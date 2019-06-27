@@ -37,6 +37,8 @@ NSString *yy_addObserveKey = @"yy_addObserveKey";
     
     //替换系统的dealloc方法
     [self yy_swizzledDeallocMethod];
+    
+    [self yy_swizzledObserveMethod];
     ///回调block与keyPath一一对应
     [self.observeKeyPathMap setValue:block forKey:keyPath];
     
@@ -52,7 +54,7 @@ NSString *yy_addObserveKey = @"yy_addObserveKey";
         block(notification);
     }
 }
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+-(void)yy_observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     
     yy_keyPathBlock block = self.observeKeyPathMap[keyPath];
     if (block) {
@@ -75,6 +77,21 @@ NSString *yy_addObserveKey = @"yy_addObserveKey";
         method_exchangeImplementations(originalMethod, swizzledMethod);
     });
 }
+
+-(void)yy_swizzledObserveMethod{
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        Class class = object_getClass((id)self);
+        Method originalMethod = class_getInstanceMethod(class, @selector(observeValueForKeyPath:ofObject:change:context:));
+        Method swizzledMethod = class_getInstanceMethod(class, @selector(yy_observeValueForKeyPath:ofObject:change:context:));
+        
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    });
+}
+
+
 
 -(void)yy_dealloc{
     
