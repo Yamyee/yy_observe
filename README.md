@@ -1,4 +1,4 @@
-- (void)viewDidLoad {
+ - (void)viewDidLoad {
     [super viewDidLoad];
     
     Person *person = [[Person alloc]init];
