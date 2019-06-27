@@ -25,6 +25,7 @@
 
 
 @implementation NSObject (yy_observe)
+
 -(void)yy_addObserveForNotification:(NSNotificationName )name object:(id)object block:(nonnull yy_notificationBlock)block{
     
     //替换系统的dealloc方法
@@ -33,6 +34,7 @@
     [self.observeNotificationMap setValue:block forKey:name];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onObserveForNotification:) name:name object:object];
 }
+
 -(void)yy_addObserveForKeyPath:(yy_keyPath)keyPath block:(yy_keyPathBlock)block{
     
     //替换系统的dealloc方法
